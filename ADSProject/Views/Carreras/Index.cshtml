@@ -1,0 +1,43 @@
+﻿@using ADSProject.Utilities
+@model IEnumerable<ADSProject.Models.Carreras>
+
+@{
+    ViewBag.Title = "Carreras";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear", "Form", new { operaciones = Operaciones.insertar })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            Operaciones
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Form", new { id = item.id, operaciones = Operaciones.modificar }) |
+            @Html.ActionLink("Ver", "Form", new { id = item.id, operaciones = Operaciones.ver }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.id, operaciones = Operaciones.eliminar })
+        </td>
+    </tr>
+}
+
+</table>
