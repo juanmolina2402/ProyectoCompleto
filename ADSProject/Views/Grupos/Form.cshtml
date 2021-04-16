@@ -21,7 +21,14 @@
             @Html.LabelFor(model => model.idCarrera, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select name="idCarrera" class="form-control">
-                    <option selected>Seleccione...</option>
+                    @if (Model.idCarrera > 0)
+                    {
+                        <option value="@Model.idCarrera">@Model.idCarrera</option>
+                    }
+                    else
+                    {
+                        <option selected>Seleccione...</option>
+                    }
                     @foreach (var item in lstCarreras)
                     {
                         <option value="@item.id">@item.nombre</option>
@@ -34,7 +41,14 @@
             @Html.LabelFor(model => model.idMateria, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">               
                 <select name="idMateria" class="form-control">
-                    <option selected>Seleccione...</option>
+                    @if (Model.idMateria > 0)
+                    {
+                        <option value="@Model.idMateria">@Model.idMateria</option>
+                    }
+                    else
+                    {
+                        <option selected>Seleccione...</option>
+                    }
                     @foreach (var item in lstMaterias)
                     {                     
                         <option value="@item.id">@item.nombre</option>
@@ -45,25 +59,29 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.idProfesor, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select name="idProfesor" class="form-control">
-                    <option selected>Seleccione...</option>
+            <div class="col-md-10"> 
+                <select name="idProfesor" class="form-control">                
+                    @if(Model.idProfesor > 0) { 
+                        <option value="@Model.idProfesor">@Model.idProfesor</option>
+                    }
+                    else
+                    {
+                        <option selected>Seleccione...</option>
+                    }
                     @foreach (var item in lstProfesores)
                     {
                         <option value="@item.id">@item.nombres @item.apellidos</option>
                     }
                 </select>
+                
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.ciclo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <select name="ciclo" class="form-control">
-                    <option selected>Seleccione...</option>               
-                    <option value="1">Ciclo I</option>       
-                    <option value="2">Ciclo II</option>         
-                </select>
+                @Html.EditorFor(model => model.ciclo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ciclo, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -94,6 +112,7 @@
                 //Deshabilitar los controles del formulario, cuando la operacion es "ver"
                 if ($("#operaciones").val() == "ver") {
                     $("form").find("input, select").attr("disabled", true);
+                    var x = 1;
                 }
             });
     </script>
