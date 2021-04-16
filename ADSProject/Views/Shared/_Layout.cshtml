@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,6 +29,9 @@
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Estudiantes", "Index", "Estudiantes")</li>
                             <li>@Html.ActionLink("Carreras", "Index", "Carreras")</li>
+                            <li>@Html.ActionLink("Materias", "Index", "Materias")</li>
+                            <li>@Html.ActionLink("Profesores", "Index", "Profesores")</li>
+                            <li>@Html.ActionLink("Grupos", "Index", "Grupos")</li>
                         </ul>
                     </li>
                 </ul>
@@ -38,12 +41,13 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - ADSProject</p>
-        </footer>
-    </div>
+    </div> 
 
+    <footer class="container">
+        <hr />
+        <p>&copy; @DateTime.Now.Year - ADSProject</p>
+    </footer>
+    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
