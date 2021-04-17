@@ -41,15 +41,18 @@ namespace ADSProject.Controllers
         {
             try
             {
-                //Si el ID es 0; entonces e esta insertando
-                if (materias.id == 0)
+                if (ModelState.IsValid)
                 {
-                    servicio.insertar(materias);
-                }
-                else
-                {
-                    //Si el ID es distinto de cero entonces estamos modificando
-                    servicio.modificar(materias.id, materias);
+                    //Si el ID es 0; entonces e esta insertando
+                    if (materias.id == 0)
+                    {
+                        servicio.insertar(materias);
+                    }
+                    else
+                    {
+                        //Si el ID es distinto de cero entonces estamos modificando
+                        servicio.modificar(materias.id, materias);
+                    }
                 }
                 return RedirectToAction("Index");
             }
