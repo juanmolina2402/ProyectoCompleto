@@ -40,16 +40,19 @@ namespace ADSProject.Controllers
         public ActionResult Form(Carreras carreras)
         {
             try
-            {
-                //Si el ID es 0; entonces e esta insertando
-                if (carreras.id == 0)
-                {
-                    servicio.insertar(carreras);
-                }
-                else
-                {
-                    //Si el ID es distinto de cero entonces estamos modificando
-                    servicio.modificar(carreras.id, carreras);
+            {   //Validamos que el modelo carrera sea válido
+                //Segun las validaciones que le agregamos anteriormente
+                if (ModelState.IsValid) { 
+                    //Si el ID es 0; entonces e esta insertando
+                    if (carreras.id == 0)
+                    {
+                        servicio.insertar(carreras);
+                    }
+                    else
+                    {
+                        //Si el ID es distinto de cero entonces estamos modificando
+                        servicio.modificar(carreras.id, carreras);
+                    }
                 }
                 return RedirectToAction("Index");
             }
