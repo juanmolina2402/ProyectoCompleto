@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/css")  
     @Scripts.Render("~/bundles/modernizr")
-
+    @Styles.Render("~/bundles/mycss")  
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -51,5 +51,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/myjs")
 </body>
 </html>

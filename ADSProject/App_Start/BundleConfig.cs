@@ -26,6 +26,16 @@ namespace ADSProject
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/mycss").Include(
+                      "~/Content/sweetalert2.min.css",
+                      "~/Content/jquery.loadingModal.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mycss").Include(
+                     "~/Scripts/sweetalert2.min.js",
+                     "~/Scripts/sweetalert2.all.min.js",
+                     "~/Scripts/jquery.loadingModal.min.js",
+                     "~/Scripts/ajax.js"));
         }
     }
 }
