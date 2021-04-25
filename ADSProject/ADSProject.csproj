@@ -226,6 +226,7 @@
     <Compile Include="Services\ServiceMaterias.cs" />
     <Compile Include="Services\ServiceProfesores.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\JsonHttpStatusResult.cs" />
     <Compile Include="Utilities\Operaciones.cs" />
   </ItemGroup>
   <ItemGroup>

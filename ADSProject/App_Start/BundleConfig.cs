@@ -31,7 +31,7 @@ namespace ADSProject
                       "~/Content/sweetalert2.min.css",
                       "~/Content/jquery.loadingModal.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/mycss").Include(
+            bundles.Add(new ScriptBundle("~/bundles/myjs").Include(
                      "~/Scripts/sweetalert2.min.js",
                      "~/Scripts/sweetalert2.all.min.js",
                      "~/Scripts/jquery.loadingModal.min.js",
