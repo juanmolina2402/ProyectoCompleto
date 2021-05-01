@@ -54,7 +54,7 @@
                 <td>
                     @Html.ActionLink("Editar", "Form", new { id = item.id, operaciones = Operaciones.modificar }, new { @class = "btn btn-xs btn-warning" })
                     @Html.ActionLink("Ver", "Form", new { id = item.id, operaciones = Operaciones.ver }, new { @class = "btn btn-xs btn-default" })
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.id, operaciones = Operaciones.eliminar }, new { @class = "btn btn-xs btn-danger" })
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.id, operaciones = Operaciones.eliminar }, new { @class = "btn btn-xs btn-danger eliminar" })
                 </td>
             </tr>
         }

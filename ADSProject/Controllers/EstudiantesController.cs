@@ -4,6 +4,7 @@ using ADSProject.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -43,37 +44,66 @@ namespace ADSProject.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    int id = 0;
                     //Si el ID es 0; entonces e esta insertando
                     if (estudiantes.id == 0)
                     {
-                        servicio.insertar(estudiantes);
+                        id = servicio.insertar(estudiantes);
                     }
                     else
                     {
                         //Si el ID es distinto de cero entonces estamos modificando
-                        servicio.modificar(estudiantes.id, estudiantes);
+                        id= servicio.modificar(estudiantes.id, estudiantes);
+                    }
+
+                    if (id > 0)
+                    {
+                        //Si la operación fué exitosa, entonces devolvemos un codigo 200(sucess)
+                        return new JsonHttpStatusResult(estudiantes, HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        //Si la operacion no fue exitosa, entonces devolvemos un codigo 202(Accepted)
+                        return new JsonHttpStatusResult(estudiantes, HttpStatusCode.Accepted);
                     }
                 }
-                return RedirectToAction("Index");
+                else
+                {
+                    IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(temp => temp.Errors);
+                    return new JsonHttpStatusResult(allErrors, HttpStatusCode.BadRequest);
+                }
+                //return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                throw;
+                return new JsonHttpStatusResult(estudiantes, HttpStatusCode.InternalServerError);
             }
         }
 
-        [HttpGet]
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public JsonResult Delete(int id, string operacion)
         {
             try
             {
-                //Eliminar un estudiante
-                servicio.eliminar(id);
-                return RedirectToAction("Index");
+                bool correcto = false;
+                //Eliminar una carrera
+                correcto = servicio.eliminar(id);
+                //Eliminar un estudiante           
+                if (correcto)
+                {
+                    //Se devuelve el id del elemento eliminado y se retorna un codigo 200 (succes)
+                    return new JsonHttpStatusResult(new { id }, HttpStatusCode.OK);
+                }
+                else
+                {
+                    //Si no se puede eliminar, entonces se retorna un codigo 202(accepted)
+                    return new JsonHttpStatusResult(new { id }, HttpStatusCode.Accepted);
+                }
+                //return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                throw;
+                return new JsonHttpStatusResult(new { id }, HttpStatusCode.InternalServerError);
             }
         }
     }

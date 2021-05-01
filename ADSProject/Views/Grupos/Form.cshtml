@@ -13,7 +13,7 @@
 {
     @Html.AntiForgeryToken()
     <input type="hidden" id="operaciones" value="@ViewData["Operacion"]" />
-
+    <input type="hidden" id="_redirectURL" value="@Url.Action("Index", "Grupos")" />
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -114,6 +114,10 @@
                     $("form").find("input, select").attr("disabled", true);
                     var x = 1;
                 }
+                //Agregando la clase form-ajax la cual activa el formulario para trabajar con ajax
+                $("form").addClass("form-ajax");
+                //Activar AJAX
+                initAjaxForm();
             });
     </script>
 }

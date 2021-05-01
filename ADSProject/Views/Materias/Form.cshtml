@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
     <input type="hidden" id="operaciones" value="@ViewData["Operacion"]" />
-
+    <input type="hidden" id="_redirectURL" value="@Url.Action("Index", "Materias")" />
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -43,6 +43,9 @@
                 if ($("#operaciones").val() == "ver") {
                     $("form").find("input, select").attr("disabled", true);
                 }
+                $("form").addClass("form-ajax");
+                //Activar AJAX
+                initAjaxForm();
             });
     </script>
 }
