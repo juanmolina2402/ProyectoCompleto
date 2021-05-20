@@ -1,5 +1,6 @@
 ﻿using ADSProject.DAL;
 using ADSProject.Models;
+using ADSProject.Models.Context;
 using ADSProject.Services;
 using ADSProject.Utilities;
 using System;
@@ -13,11 +14,7 @@ namespace ADSProject.Controllers
 {
     public class GruposController : Controller
     {
-
         // Instancia del servicio encargado de proveer los metodos1
-        public CarrerasDAL carrerasDal = new CarrerasDAL();
-        public MateriasDAL materiasDal = new MateriasDAL();
-        public ProfesoresDAL profesoresDal = new ProfesoresDAL();
         public ServiceGrupos servicio = new ServiceGrupos();
         public GruposController() { }
 
@@ -32,18 +29,29 @@ namespace ADSProject.Controllers
         public ActionResult Form(int? id, Operaciones operaciones)
         {          
             var grupos = new Grupos();
-            List<Carreras> lstCarreras = carrerasDal.obtenerTodos();
-            List<Materias> lstMaterias = materiasDal.obtenerTodos();
-            List<Profesores> lstProfesores = profesoresDal.obtenerTodos();
+        
+            using (MyDbContext context = new MyDbContext())
+            {
+                //crear instancia de la DAL y se pasa el contexto de la bd
+                CarrerasDAL dal = new CarrerasDAL(context);
+                MateriasDAL dal2 = new MateriasDAL(context);
+                ProfesoresDAL dal3 = new ProfesoresDAL(context);
+
+                //llamada al metodo para obtener todos los registros
+                List<Carreras> lstCarreras = dal.obtenerTodos();
+                List<Materias> lstMaterias = dal2.obtenerTodos();
+                List<Profesores> lstProfesores = dal3.obtenerTodos();
+
+                ViewBag.Carreras = lstCarreras;
+                ViewBag.Materias = lstMaterias;
+                ViewBag.Profesores = lstProfesores;
+            }
+       
             //Si el id tiene un valor; entonces se procede a buscar una carrera
             if (id.HasValue)
             {
                 grupos = servicio.obtenerPorId(id.Value);
             }
-            //Indica si la operacion que estamos realizando en el formulario
-            ViewBag.Carreras = lstCarreras;
-            ViewBag.Materias = lstMaterias;
-            ViewBag.Profesores = lstProfesores;
             ViewData["Operacion"] = operaciones;
             return View(grupos);
         }

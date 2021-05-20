@@ -1,5 +1,6 @@
 ﻿using ADSProject.DAL;
 using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ADSProject.Services
     {
         // Instancia para acceder a todos los metodos de la DAL
 
-        public CarrerasDAL carrerasDal = new CarrerasDAL();
+        //public CarrerasDAL carrerasDal = new CarrerasDAL();
 
         // Para insertar carrera
 
@@ -19,7 +20,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return carrerasDal.insertarCarreras(carreras);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    CarrerasDAL dal = new CarrerasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.insertarCarreras(carreras);
+                }
             }
             catch (Exception ex)
             {
@@ -32,7 +40,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return carrerasDal.modificarCarreras(id, carreras);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    CarrerasDAL dal = new CarrerasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.modificarCarreras(id, carreras);
+                }
             }
             catch (Exception ex)
             {
@@ -44,7 +59,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return carrerasDal.eliminarCarreras(id);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    CarrerasDAL dal = new CarrerasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.eliminarCarreras(id);
+                }
             }
             catch (Exception ex)
             {
@@ -55,7 +77,21 @@ namespace ADSProject.Services
         //Para obtener todos las carreras
         public List<Carreras> obtenerTodos()
         {
-            return carrerasDal.obtenerTodos();
+            try
+            {
+                //Inicializar el contexto que nos permitira conectarnos con la bd
+                using (MyDbContext context = new MyDbContext()){
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    CarrerasDAL dal = new CarrerasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.obtenerTodos();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Para obtener por ID
@@ -64,7 +100,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return carrerasDal.obtenerPorID(id);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    CarrerasDAL dal = new CarrerasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.obtenerPorID(id);
+                }
             }
             catch (Exception ex)
             {

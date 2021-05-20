@@ -1,5 +1,6 @@
 ﻿using ADSProject.DAL;
 using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ADSProject.Services
     {
         // Instancia para acceder a todos los metodos de la DAL
 
-        public EstudiantesDAL estudianteDal = new EstudiantesDAL();
+        //public EstudiantesDAL estudianteDal = new EstudiantesDAL();
 
         // Para insertar estudiante
 
@@ -19,7 +20,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return estudianteDal.insertarEstudiantes(estudiantes);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    EstudiantesDAL dal = new EstudiantesDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.insertarEstudiantes(estudiantes);
+                }
             }
             catch(Exception ex)
             {
@@ -32,7 +40,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return estudianteDal.modificarEstudiante(id, estudiantes);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    EstudiantesDAL dal = new EstudiantesDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.modificarEstudiante(id, estudiantes);
+                }
             }
             catch (Exception ex)
             {
@@ -44,7 +59,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return estudianteDal.eliminarEstudiante(id);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    EstudiantesDAL dal = new EstudiantesDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.eliminarEstudiante(id);
+                }
             }
             catch (Exception ex)
             {
@@ -54,8 +76,15 @@ namespace ADSProject.Services
 
         //Para obtener todos los estudiantes
         public List<Estudiantes> obtenerTodos()
-        {      
-            return estudianteDal.obtenerTodos(); 
+        {
+            using (MyDbContext context = new MyDbContext())
+            {
+                //crear instancia de la DAL y se pasa el contexto de la bd
+                EstudiantesDAL dal = new EstudiantesDAL(context);
+
+                //llamada al metodo para obtener todos los registros
+                return dal.obtenerTodos();
+            }
         }
 
         //Para obtener por ID
@@ -64,7 +93,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return estudianteDal.obtenerPorID(id);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    EstudiantesDAL dal = new EstudiantesDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.obtenerPorID(id);
+                }
             }
             catch (Exception ex)
             {

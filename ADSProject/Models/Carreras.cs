@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ADSProject.Models
 {
+    [Table("Carreras")]
     public class Carreras
-    {
+    {    
         public int id { get; set; }
 
         [Required]

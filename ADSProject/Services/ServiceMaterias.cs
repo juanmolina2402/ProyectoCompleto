@@ -1,5 +1,6 @@
 ﻿using ADSProject.DAL;
 using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ADSProject.Services
     {
         // Instancia para acceder a todos los metodos de la DAL
 
-        public MateriasDAL materiasDal = new MateriasDAL();
+        //public MateriasDAL materiasDal = new MateriasDAL();
 
         // Para insertar carrera
 
@@ -19,7 +20,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return materiasDal.insertarMaterias(materias);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    MateriasDAL dal = new MateriasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.insertarMaterias(materias);
+                }
             }
             catch (Exception ex)
             {
@@ -32,7 +40,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return materiasDal.modificarMaterias(id, materias);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    MateriasDAL dal = new MateriasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.modificarMaterias(id, materias);
+                }
             }
             catch (Exception ex)
             {
@@ -44,7 +59,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return materiasDal.eliminarMaterias(id);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    MateriasDAL dal = new MateriasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.eliminarMaterias(id);
+                }
             }
             catch (Exception ex)
             {
@@ -55,7 +77,21 @@ namespace ADSProject.Services
         //Para obtener todos las carreras
         public List<Materias> obtenerTodos()
         {
-            return materiasDal.obtenerTodos();
+            try
+            {
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    MateriasDAL dal = new MateriasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.obtenerTodos();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Para obtener por ID
@@ -64,7 +100,14 @@ namespace ADSProject.Services
         {
             try
             {
-                return materiasDal.obtenerPorID(id);
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    MateriasDAL dal = new MateriasDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.obtenerPorID(id);
+                }
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,23 @@ namespace ADSProject.DAL
     public class ProfesoresDAL
     {
         //Listado de estudiantes a nivel de memoria del proyecto
-        public static List<Profesores> lstProfesores = new List<Profesores>();
+        //public static List<Profesores> lstProfesores = new List<Profesores>();
 
-        public ProfesoresDAL() { }
+        private MyDbContext _context;
+
+        public ProfesoresDAL(MyDbContext context) { _context = context; }
 
         public int insertarProfesores(Profesores profesores)
         {
             try
             {
-                //Si el listado tiene elementos, entonces se genera el ID
-                if (lstProfesores.Count > 0)
-                {
-                    profesores.id = lstProfesores.Last().id + 1;
-                }
-                else
-                {
-                    //Si el listado esta vacio entonces el id será por default 1
-                    profesores.id = 1;
-                }
-                lstProfesores.Add(profesores);
+                //Se agrega carrera que se insertará
+                _context.Profesores.Add(profesores);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
+
+                //Se retorna el ID de el registro recien insertada
                 return profesores.id;
 
             }
@@ -41,8 +40,15 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstProfesores[lstProfesores.FindIndex(temp => temp.id == id)] = profesores;
+                var currentItem = _context.Profesores.SingleOrDefault(temp => temp.id == id);
+
+                //Trasladar los valores de los registros que queremos modificar al registro que acabamos de consultar
+                _context.Entry(currentItem).CurrentValues.SetValues(profesores);
+
+                //Guardar los cambios en la bd
+                _context.SaveChanges();
+
+                //retornamos el ID de la carrera recien modificada
                 return profesores.id;
             }
             catch (Exception ex)
@@ -56,8 +62,14 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstProfesores.RemoveAt(lstProfesores.FindIndex(aux => aux.id == id));
+                //Se consulta la carrera que se quiere eliminar por el ID
+                var item = _context.Profesores.SingleOrDefault(x => x.id == id);
+
+                //Remover la carrera recien consultada
+                _context.Profesores.Remove(item);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -69,7 +81,10 @@ namespace ADSProject.DAL
         //Para listar todos los estudiantes
         public List<Profesores> obtenerTodos()
         {
-            return lstProfesores;
+            //Se consultan todos los registros de carrera
+            var listado = _context.Profesores.ToList();
+            //Retorno el listado de registros.
+            return listado;
         }
 
         //Para encontrar un estudiante por ID
@@ -77,7 +92,8 @@ namespace ADSProject.DAL
         {
             try
             {
-                var elementos = lstProfesores.Find(temp => temp.id == id);
+                var elementos = _context.Profesores.SingleOrDefault(temp => temp.id == id);
+                // Se retornan los registros
                 return elementos;
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,28 +10,26 @@ namespace ADSProject.DAL
     public class EstudiantesDAL
     {
         //Listado de estudiantes a nivel de memoria del proyecto
-        public static List<Estudiantes> lstEstudiantes = new List<Estudiantes>();
+        //public static List<Estudiantes> lstEstudiantes = new List<Estudiantes>();
 
-        public EstudiantesDAL() { }
+        private MyDbContext _context;
+
+        public EstudiantesDAL(MyDbContext context) { _context = context; }
 
         public int insertarEstudiantes(Estudiantes estudiantes)
         {
             try
             {
-                //Si el listado tiene elementos, entonces se genera el ID
-                if(lstEstudiantes.Count > 0)
-                {
-                    estudiantes.id = lstEstudiantes.Last().id + 1;
-                }
-                else
-                {
-                    //Si el listado esta vacio entonces el id será por default 1
-                    estudiantes.id = 1;
-                }
-                lstEstudiantes.Add(estudiantes);
+                //Se agrega carrera que se insertará
+                _context.Estudiantes.Add(estudiantes);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
+
+                //Se retorna el ID de el registro recien insertada
                 return estudiantes.id;
-               
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw;
             }
@@ -40,11 +39,19 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstEstudiantes[lstEstudiantes.FindIndex(temp => temp.id == id)] = estudiantes;
+                //Primero se consulta la carrera
+                var currentItem = _context.Estudiantes.SingleOrDefault(temp => temp.id == id);
+
+                //Trasladar los valores de los registros que queremos modificar al registro que acabamos de consultar
+                _context.Entry(currentItem).CurrentValues.SetValues(estudiantes);
+
+                //Guardar los cambios en la bd
+                _context.SaveChanges();
+
+                //retornamos el ID de la carrera recien modificada
                 return estudiantes.id;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -55,8 +62,14 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstEstudiantes.RemoveAt(lstEstudiantes.FindIndex(aux => aux.id == id));
+                //Se consulta la carrera que se quiere eliminar por el ID
+                var item = _context.Estudiantes.SingleOrDefault(x => x.id == id);
+
+                //Remover la carrera recien consultada
+                _context.Estudiantes.Remove(item);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -68,7 +81,17 @@ namespace ADSProject.DAL
         //Para listar todos los estudiantes
         public List <Estudiantes> obtenerTodos()
         {
-            return lstEstudiantes;  
+            try
+            {
+                //Se consultan todos los registros de carrera
+                var listado = _context.Estudiantes.ToList();
+                //Retorno el listado de registros.
+                return listado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Para encontrar un estudiante por ID
@@ -76,7 +99,8 @@ namespace ADSProject.DAL
         {
             try
             {
-                var elementos = lstEstudiantes.Find(temp => temp.id == id);
+                var elementos = _context.Estudiantes.SingleOrDefault(temp => temp.id == id);
+                // Se retornan los registros
                 return elementos;
             }
             catch (Exception ex)

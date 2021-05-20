@@ -3,33 +3,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ADSProject.Models.Context;
 
 namespace ADSProject.DAL
 {
     public class CarrerasDAL
     {
         //Listado de carreras a nivel de memoria del proyecto
-        public static List<Carreras> lstCarreras = new List<Carreras>();
+        //public static List<Carreras> lstCarreras = new List<Carreras>();
 
-        public CarrerasDAL() { }
+        //Instancia del contexto que nos permite conectarnos a la BD
+        private MyDbContext _context;
+
+        //En este constructor se recibe el contexto que se manda desde el servicio
+        public CarrerasDAL(MyDbContext context) { _context = context; }
 
         public int insertarCarreras(Carreras carreras)
         {
             try
             {
-                //Si el listado tiene elementos, entonces se genera el ID
-                if (lstCarreras.Count > 0)
-                {
-                    carreras.id = lstCarreras.Last().id + 1;
-                }
-                else
-                {
-                    //Si el listado esta vacio entonces el id será por default 1
-                    carreras.id = 1;
-                }
-                lstCarreras.Add(carreras);
-                return carreras.id;
+                //Se agrega carrera que se insertará
+                _context.Carrera.Add(carreras);
 
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
+
+                //Se retorna el ID de el registro recien insertada
+                return carreras.id;
             }
             catch (Exception ex)
             {
@@ -41,8 +41,16 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstCarreras[lstCarreras.FindIndex(temp => temp.id == id)] = carreras;
+                //Primero se consulta la carrera
+                var currentItem = _context.Carrera.SingleOrDefault(temp => temp.id == id);
+
+                //Trasladar los valores de los registros que queremos modificar al registro que acabamos de consultar
+                _context.Entry(currentItem).CurrentValues.SetValues(carreras);
+
+                //Guardar los cambios en la bd
+                _context.SaveChanges();
+
+                //retornamos el ID de la carrera recien modificada
                 return carreras.id;
             }
             catch (Exception ex)
@@ -56,8 +64,14 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstCarreras.RemoveAt(lstCarreras.FindIndex(aux => aux.id == id));
+                //Se consulta la carrera que se quiere eliminar por el ID
+                var item = _context.Carrera.SingleOrDefault(x => x.id == id);
+
+                //Remover la carrera recien consultada
+                _context.Carrera.Remove(item);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -69,7 +83,17 @@ namespace ADSProject.DAL
         //Para listar todos las carreras
         public List<Carreras> obtenerTodos()
         {
-            return lstCarreras;
+            try
+            {
+                //Se consultan todos los registros de carrera
+                var listado = _context.Carrera.ToList();
+                //Retorno el listado de registros.
+                return listado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Para encontrar una carrera por ID
@@ -77,10 +101,12 @@ namespace ADSProject.DAL
         {
             try
             {
-                var elementos = lstCarreras.Find(temp => temp.id == id);
+                // Se obtiene el registro usando el ID
+                var elementos = _context.Carrera.SingleOrDefault(temp => temp.id == id);
+                // Se retornan los registros
                 return elementos;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

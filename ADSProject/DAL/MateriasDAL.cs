@@ -1,4 +1,5 @@
 ﻿using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,23 @@ namespace ADSProject.DAL
     public class MateriasDAL
     {
         //Listado de carreras a nivel de memoria del proyecto
-        public static List<Materias> lstMaterias = new List<Materias>();
+        //public static List<Materias> lstMaterias = new List<Materias>();
 
-        public MateriasDAL() { }
+        private MyDbContext _context;
+
+        public MateriasDAL(MyDbContext context) { _context = context; }
 
         public int insertarMaterias(Materias materias)
         {
             try
             {
-                //Si el listado tiene elementos, entonces se genera el ID
-                if (lstMaterias.Count > 0)
-                {
-                    materias.id = lstMaterias.Last().id + 1;
-                }
-                else
-                {
-                    //Si el listado esta vacio entonces el id será por default 1
-                    materias.id = 1;
-                }
-                lstMaterias.Add(materias);
+                //Se agrega carrera que se insertará
+                _context.Materias.Add(materias);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
+
+                //Se retorna el ID de el registro recien insertada
                 return materias.id;
             }
             catch (Exception ex)
@@ -40,8 +39,16 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstMaterias[lstMaterias.FindIndex(temp => temp.id == id)] = materias;
+                //Primero se consulta la carrera
+                var currentItem = _context.Materias.SingleOrDefault(temp => temp.id == id);
+
+                //Trasladar los valores de los registros que queremos modificar al registro que acabamos de consultar
+                _context.Entry(currentItem).CurrentValues.SetValues(materias);
+
+                //Guardar los cambios en la bd
+                _context.SaveChanges();
+
+                //retornamos el ID de la carrera recien modificada
                 return materias.id;
             }
             catch (Exception ex)
@@ -55,8 +62,14 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstMaterias.RemoveAt(lstMaterias.FindIndex(aux => aux.id == id));
+                //Se consulta la carrera que se quiere eliminar por el ID
+                var item = _context.Materias.SingleOrDefault(x => x.id == id);
+
+                //Remover la carrera recien consultada
+                _context.Materias.Remove(item);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -68,7 +81,17 @@ namespace ADSProject.DAL
         //Para listar todos las carreras
         public List<Materias> obtenerTodos()
         {
-            return lstMaterias;
+            try
+            {
+                //Se consultan todos los registros de carrera
+                var listado = _context.Materias.ToList();
+                //Retorno el listado de registros.
+                return listado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Para encontrar una carrera por ID
@@ -76,10 +99,10 @@ namespace ADSProject.DAL
         {
             try
             {
-                var elementos = lstMaterias.Find(temp => temp.id == id);
+                var elementos = _context.Materias.SingleOrDefault(temp => temp.id == id);
                 return elementos;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

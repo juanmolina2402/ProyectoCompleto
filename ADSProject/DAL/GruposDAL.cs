@@ -1,4 +1,5 @@
 ﻿using ADSProject.Models;
+using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +9,22 @@ namespace ADSProject.DAL
 {
     public class GruposDAL
     {
-        public static List<Grupos> lstGrupos = new List<Grupos>();
+        //public static List<Grupos> lstGrupos = new List<Grupos>();
 
-        public GruposDAL() { }
+        private MyDbContext _context;
+        public GruposDAL(MyDbContext context) { _context = context; }
 
         public int insertarGrupos(Grupos grupos)
         {
             try
             {
-                //Si el listado tiene elementos, entonces se genera el ID
-                if (lstGrupos.Count > 0)
-                {
-                    grupos.id = lstGrupos.Last().id + 1;
-                }
-                else
-                {
-                    //Si el listado esta vacio entonces el id será por default 1
-                    grupos.id = 1;
-                }
-                lstGrupos.Add(grupos);
+                //Se agrega carrera que se insertará
+                _context.Grupos.Add(grupos);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
+
+                //Se retorna el ID de el registro recien insertada
                 return grupos.id;
 
             }
@@ -40,8 +38,16 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstGrupos[lstGrupos.FindIndex(temp => temp.id == id)] = grupos;
+                //Primero se consulta la carrera
+                var currentItem = _context.Grupos.SingleOrDefault(temp => temp.id == id);
+
+                //Trasladar los valores de los registros que queremos modificar al registro que acabamos de consultar
+                _context.Entry(currentItem).CurrentValues.SetValues(grupos);
+
+                //Guardar los cambios en la bd
+                _context.SaveChanges();
+
+                //retornamos el ID de la carrera recien modificada
                 return grupos.id;
             }
             catch (Exception ex)
@@ -55,8 +61,14 @@ namespace ADSProject.DAL
         {
             try
             {
-                //Buscando el indice en la ista
-                lstGrupos.RemoveAt(lstGrupos.FindIndex(aux => aux.id == id));
+                //Se consulta la carrera que se quiere eliminar por el ID
+                var item = _context.Grupos.SingleOrDefault(x => x.id == id);
+
+                //Remover la carrera recien consultada
+                _context.Grupos.Remove(item);
+
+                //Se guardan los cambios en la bd
+                _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -68,7 +80,17 @@ namespace ADSProject.DAL
         //Para listar todos las carreras
         public List<Grupos> obtenerTodos()
         {
-            return lstGrupos;
+            try
+            {
+                //Se consultan todos los registros de carrera
+                var listado = _context.Grupos.ToList();
+                //Retorno el listado de registros.
+                return listado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Para encontrar una carrera por ID
@@ -76,7 +98,9 @@ namespace ADSProject.DAL
         {
             try
             {
-                var elementos = lstGrupos.Find(temp => temp.id == id);
+                // Se obtiene el registro usando el ID
+                var elementos = _context.Grupos.SingleOrDefault(temp => temp.id == id);
+                // Se retornan los registros
                 return elementos;
             }
             catch (Exception ex)
