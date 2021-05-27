@@ -99,6 +99,22 @@ namespace ADSProject.DAL
             }
         }
 
+        public List<Estudiantes> obtenerTodos()
+        {
+            try
+            {
+                //Se consultan todos los registros de carrera
+                var listado = _context.Estudiantes.ToList();
+                
+                //Retorno el listado de registros.
+                return listado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         //Para encontrar un estudiante por ID
         public Estudiantes obtenerPorID(int id)
         {

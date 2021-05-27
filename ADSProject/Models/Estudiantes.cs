@@ -38,5 +38,6 @@ namespace ADSProject.Models
         public int IdCarrera { get; set; }
         [ForeignKey("IdCarrera")]
         public Carreras Carrera { get; set; }
+        public ICollection<AsignacionGrupo> AsignacionGrupos { get; set; }
     }
 }

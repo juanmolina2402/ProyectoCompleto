@@ -75,7 +75,7 @@ namespace ADSProject.Services
         }
 
         //Para obtener todos los estudiantes
-        public List<Grupos> obtenerTodos(string[] includes)
+        public List<Grupos> obtenerTodos()
         {
             try
             {
@@ -85,7 +85,7 @@ namespace ADSProject.Services
                     GruposDAL dal = new GruposDAL(context);
 
                     //llamada al metodo para obtener todos los registros
-                    return dal.obtenerTodos(includes);
+                    return dal.obtenerTodos();
                 }
             }
             catch (Exception)
@@ -94,8 +94,21 @@ namespace ADSProject.Services
             }
         }
 
-        //Para obtener por ID
-
+        public List<Grupos> obtenerTodos(string[] includes)
+        {
+            try
+            {
+                using (MyDbContext context = new MyDbContext())
+                {
+                    GruposDAL dal = new GruposDAL(context);
+                    return dal.obtenerTodos(includes);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public Grupos obtenerPorId(int id)
         {
             try
@@ -106,7 +119,28 @@ namespace ADSProject.Services
                     GruposDAL dal = new GruposDAL(context);
 
                     //llamada al metodo para obtener todos los registros
-                    return dal.obtenerPorID(id);
+                    return dal.obtenerPorId(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        //Para obtener por ID
+
+        public Grupos obtenerPorId(int id, string[] includes)
+        {
+            try
+            {
+                using (MyDbContext context = new MyDbContext())
+                {
+                    //crear instancia de la DAL y se pasa el contexto de la bd
+                    GruposDAL dal = new GruposDAL(context);
+
+                    //llamada al metodo para obtener todos los registros
+                    return dal.obtenerPorId(id, includes);
                 }
             }
             catch (Exception ex)

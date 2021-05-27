@@ -77,6 +77,18 @@ namespace ADSProject.DAL
                 throw;
             }
         }
+        public List<Grupos> obtenerTodos()
+        {
+            try
+            {
+                var listado = _context.Grupos.Include("Carrera").Include("Materia").Include("Profesor").ToList();
+                return listado;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         //Para listar todos las carreras
         public List<Grupos> obtenerTodos(string[] includes)
@@ -85,9 +97,11 @@ namespace ADSProject.DAL
             {
                 //Se consultan todos los registros de carrera
                 var listado = _context.Grupos.AsQueryable();
-                foreach (var include in includes)
-                {
-                    listado = listado.Include(include);
+                if (includes != null && includes.Count() > 0) { 
+                    foreach (var include in includes)
+                    {
+                        listado = listado.Include(include);
+                    }
                 }
                 //Retorno el listado de registros.
                 return listado.ToList();
@@ -99,7 +113,7 @@ namespace ADSProject.DAL
         }
 
         //Para encontrar una carrera por ID
-        public Grupos obtenerPorID(int id)
+        public Grupos obtenerPorId(int id)
         {
             try
             {
@@ -107,6 +121,26 @@ namespace ADSProject.DAL
                 var elementos = _context.Grupos.SingleOrDefault(temp => temp.id == id);
                 // Se retornan los registros
                 return elementos;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Grupos obtenerPorId(int Id, string[] includes)
+        {
+            try
+            {
+                var item = _context.Grupos.AsQueryable();
+                if (includes != null && includes.Count() > 0)
+                {
+                    foreach (var include in includes)
+                    {
+                        item = item.Include(include);
+                    }
+                }
+                return item.SingleOrDefault(x => x.id == Id); ;
             }
             catch (Exception ex)
             {

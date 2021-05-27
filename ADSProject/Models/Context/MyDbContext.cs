@@ -15,5 +15,6 @@ namespace ADSProject.Models.Context
         public DbSet<Materias> Materias { get; set; }
         public DbSet<Profesores> Profesores { get; set; }
         public DbSet<Grupos> Grupos { get; set; }
+        public DbSet<AsignacionGrupo> AsignacionGrupo { get; set; }
     }
 }

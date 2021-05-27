@@ -91,6 +91,22 @@ namespace ADSProject.Services
             }
         }
 
+        public List<Estudiantes> obtenerTodos()
+        {
+            try
+            {
+                using (MyDbContext context = new MyDbContext())
+                {
+                    EstudiantesDAL dal = new EstudiantesDAL(context);
+                    return dal.obtenerTodos();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         //Para obtener por ID
 
         public Estudiantes obtenerPorId(int id)

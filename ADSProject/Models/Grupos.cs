@@ -37,5 +37,6 @@ namespace ADSProject.Models
         [Required]
         [Display(Name = "Año")]
         public int anio { get; set; }
+        public ICollection<AsignacionGrupo> AsignacionGrupos { get; set; }
     }
 }
