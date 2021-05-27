@@ -22,6 +22,14 @@ namespace ADSProject.Controllers
         public GruposController() { }
 
         [HttpGet]
+        public JsonResult CargarMaterias(int? IdCarrera)
+        {
+            var listadoCarreras = IdCarrera == null ? new List<Materias>() :
+            servicioMaterias.obtenerTodos().Where(x => x.IdCarrera == IdCarrera);
+            return new JsonHttpStatusResult(listadoCarreras, HttpStatusCode.OK);
+        }
+
+        [HttpGet]
         public ActionResult Index()
         {
             var grupos = servicio.obtenerTodos(new string[] { "Carrera" , "Materia", "Profesor" });
