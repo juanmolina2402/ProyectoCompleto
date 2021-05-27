@@ -18,6 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.nombre)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCarrera)
+            </th>
             <th>opciones</th>
         </tr>
 
@@ -26,6 +29,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Carrera.nombre)
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Form", new { id = item.id, operaciones = Operaciones.modificar }, new { @class = "btn btn-xs btn-warning" })

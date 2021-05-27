@@ -16,5 +16,11 @@ namespace ADSProject.Models
         [Display(Name = "Nombre")]
         [MaxLength(length: 50, ErrorMessage = "La longitud del campo no puede ser mayor a 50 caracteres.")]
         public string nombre { get; set; }
+
+        [Display(Name = "Carrera")]
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        public int IdCarrera { get; set; }
+        [ForeignKey("IdCarrera")]
+        public Carreras Carrera { get; set; }
     }
 }

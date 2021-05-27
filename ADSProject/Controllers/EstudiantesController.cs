@@ -14,12 +14,13 @@ namespace ADSProject.Controllers
     {
         // Instancia del servicio encargado de proveer los metodos
         public ServiceEstudiantes servicio = new ServiceEstudiantes();
+        public ServiceCarreras servicioCarreras = new ServiceCarreras();
         public EstudiantesController() { }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var estudiantes = servicio.obtenerTodos();
+            var estudiantes = servicio.obtenerTodos(new string[] { "Carrera" });
             return View(estudiantes);
         }
 
@@ -34,6 +35,9 @@ namespace ADSProject.Controllers
             }
             //Indica si la operacion que estamos realizando en el formulario
             ViewData["Operacion"] = operaciones;
+
+            //Carreras para llenar el listado de carreras
+            ViewBag.Carreras = servicioCarreras.obtenerTodos();
             return View(estudiantes);
         }
 

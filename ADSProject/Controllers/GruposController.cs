@@ -16,43 +16,30 @@ namespace ADSProject.Controllers
     {
         // Instancia del servicio encargado de proveer los metodos1
         public ServiceGrupos servicio = new ServiceGrupos();
+        public ServiceCarreras servicioCarreras = new ServiceCarreras();
+        public ServiceMaterias servicioMaterias = new ServiceMaterias();
+        public ServiceProfesores servicioProfesores = new ServiceProfesores();
         public GruposController() { }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var grupos = servicio.obtenerTodos();
+            var grupos = servicio.obtenerTodos(new string[] { "Carrera" , "Materia", "Profesor" });
             return View(grupos);
         }
 
         [HttpGet]
         public ActionResult Form(int? id, Operaciones operaciones)
         {          
-            var grupos = new Grupos();
-        
-            using (MyDbContext context = new MyDbContext())
-            {
-                //crear instancia de la DAL y se pasa el contexto de la bd
-                CarrerasDAL dal = new CarrerasDAL(context);
-                MateriasDAL dal2 = new MateriasDAL(context);
-                ProfesoresDAL dal3 = new ProfesoresDAL(context);
-
-                //llamada al metodo para obtener todos los registros
-                List<Carreras> lstCarreras = dal.obtenerTodos();
-                List<Materias> lstMaterias = dal2.obtenerTodos();
-                List<Profesores> lstProfesores = dal3.obtenerTodos();
-
-                ViewBag.Carreras = lstCarreras;
-                ViewBag.Materias = lstMaterias;
-                ViewBag.Profesores = lstProfesores;
-            }
-       
+            var grupos = new Grupos();            
             //Si el id tiene un valor; entonces se procede a buscar una carrera
             if (id.HasValue)
             {
                 grupos = servicio.obtenerPorId(id.Value);
             }
             ViewData["Operacion"] = operaciones;
+            ViewBag.Carrera = servicioCarreras.obtenerTodos();            ViewBag.Materia = servicioMaterias.obtenerTodos();
+            ViewBag.Profesor = servicioProfesores.obtenerTodos();
             return View(grupos);
         }
 

@@ -75,7 +75,7 @@ namespace ADSProject.Services
         }
 
         //Para obtener todos los estudiantes
-        public List<Grupos> obtenerTodos()
+        public List<Grupos> obtenerTodos(string[] includes)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace ADSProject.Services
                     GruposDAL dal = new GruposDAL(context);
 
                     //llamada al metodo para obtener todos los registros
-                    return dal.obtenerTodos();
+                    return dal.obtenerTodos(includes);
                 }
             }
             catch (Exception)

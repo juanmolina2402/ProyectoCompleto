@@ -73,9 +73,20 @@ namespace ADSProject.Services
                 throw;
             }
         }
+        public List<Materias> obtenerTodos()
+        {
+            //Inicializar el proceso para conectarnos a la bd
+            using (MyDbContext context = new MyDbContext())
+            {
+                //crear instancia de la DAL y le pasamos el context
+                MateriasDAL dal = new MateriasDAL(context);
+                //Llamada para obtener el metodo de todos los registros
+                return dal.obtenerTodos();
+            }
+        }
 
         //Para obtener todos las carreras
-        public List<Materias> obtenerTodos()
+        public List<Materias> obtenerTodos(string[] includes)
         {
             try
             {
@@ -85,7 +96,7 @@ namespace ADSProject.Services
                     MateriasDAL dal = new MateriasDAL(context);
 
                     //llamada al metodo para obtener todos los registros
-                    return dal.obtenerTodos();
+                    return dal.obtenerTodos(includes);
                 }
             }
             catch (Exception)

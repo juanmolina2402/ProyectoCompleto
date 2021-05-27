@@ -2,6 +2,7 @@
 using ADSProject.Models.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -78,15 +79,27 @@ namespace ADSProject.DAL
             }
         }
 
-        //Para listar todos las carreras
         public List<Materias> obtenerTodos()
+        {
+            //Se consultan todos los registros de carrera
+            var listado = _context.Materias.ToList();
+            //retorno el listado de registros
+            return listado;
+        }
+
+        //Para listar todos las carreras
+        public List<Materias> obtenerTodos(string[] includes)
         {
             try
             {
                 //Se consultan todos los registros de carrera
-                var listado = _context.Materias.ToList();
+                var listado = _context.Materias.AsQueryable();
+                foreach (var include in includes)
+                {
+                    listado = listado.Include(include);
+                }
                 //Retorno el listado de registros.
-                return listado;
+                return listado.ToList();
             }
             catch (Exception)
             {

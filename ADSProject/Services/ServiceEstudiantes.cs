@@ -75,15 +75,19 @@ namespace ADSProject.Services
         }
 
         //Para obtener todos los estudiantes
-        public List<Estudiantes> obtenerTodos()
+        public List<Estudiantes> obtenerTodos(string[] includes)
         {
-            using (MyDbContext context = new MyDbContext())
+            try
             {
-                //crear instancia de la DAL y se pasa el contexto de la bd
-                EstudiantesDAL dal = new EstudiantesDAL(context);
-
-                //llamada al metodo para obtener todos los registros
-                return dal.obtenerTodos();
+                using (MyDbContext context = new MyDbContext())
+                {
+                    EstudiantesDAL dal = new EstudiantesDAL(context);
+                    return dal.obtenerTodos(includes);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 

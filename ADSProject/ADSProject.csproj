@@ -215,6 +215,26 @@
     <Compile Include="Migrations\202105192255291_MigracionInicial.Designer.cs">
       <DependentUpon>202105192255291_MigracionInicial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105240406334_RelacionCarreraEstudiante.cs" />
+    <Compile Include="Migrations\202105240406334_RelacionCarreraEstudiante.Designer.cs">
+      <DependentUpon>202105240406334_RelacionCarreraEstudiante.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105242112001_RelacionCarreraMaterias.cs" />
+    <Compile Include="Migrations\202105242112001_RelacionCarreraMaterias.Designer.cs">
+      <DependentUpon>202105242112001_RelacionCarreraMaterias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105242210301_RelacionProfesorGrupo.cs" />
+    <Compile Include="Migrations\202105242210301_RelacionProfesorGrupo.Designer.cs">
+      <DependentUpon>202105242210301_RelacionProfesorGrupo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105242219094_RelacionMateriaGrupo.cs" />
+    <Compile Include="Migrations\202105242219094_RelacionMateriaGrupo.Designer.cs">
+      <DependentUpon>202105242219094_RelacionMateriaGrupo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105242230064_RelacionCarreraGrupo.cs" />
+    <Compile Include="Migrations\202105242230064_RelacionCarreraGrupo.Designer.cs">
+      <DependentUpon>202105242230064_RelacionCarreraGrupo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Carreras.cs" />
@@ -326,6 +346,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202105192255291_MigracionInicial.resx">
       <DependentUpon>202105192255291_MigracionInicial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105240406334_RelacionCarreraEstudiante.resx">
+      <DependentUpon>202105240406334_RelacionCarreraEstudiante.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105242112001_RelacionCarreraMaterias.resx">
+      <DependentUpon>202105242112001_RelacionCarreraMaterias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105242210301_RelacionProfesorGrupo.resx">
+      <DependentUpon>202105242210301_RelacionProfesorGrupo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105242219094_RelacionMateriaGrupo.resx">
+      <DependentUpon>202105242219094_RelacionMateriaGrupo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105242230064_RelacionCarreraGrupo.resx">
+      <DependentUpon>202105242230064_RelacionCarreraGrupo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
