@@ -45,9 +45,10 @@
             </div>
             <div class="col-md-3">
                 @Html.DropDownList("IdEstudiante", new SelectList(ViewBag.Estudiantes, "Id", "Nombres"), "[Seleccione una opción]", htmlAttributes: new { @class = "form-control est" })
+                <p id="msg" style="color: red;"></p>
             </div>
             <div class="col-md-2">
-                <button type="button" value="Agregar" class="btn btn-default" onclick="agregarFila()">Agregar</button>
+                <button id="val" type="button" value="Agregar" class="btn btn-default">Agregar</button>
             </div>
         </div>
         <hr />
@@ -133,18 +134,20 @@
             initAjaxForm();
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("formulario").addEventListener('submit', validarFormulario);
+        document.getElementById("val").addEventListener("click", function () {
+            validarFormulario();
         });
 
-        function validarFormulario(evento) {
-            evento.preventDefault();
-            var estudiante = document.getElementById('est').value;
+        function validarFormulario() {
+            var estudiante = document.getElementById('IdEstudiante').value;
             if (estudiante.length == 0) {
-                alert('No has seleccionado nada en estudiante');
+                document.getElementById("msg").innerHTML = "Este campo es requerido."
                 return;
-            }           
-            this.submit();
+            } else {
+                document.getElementById("msg").innerHTML = "";
+                agregarFila();
+            }        
         }
+
     </script>
 }

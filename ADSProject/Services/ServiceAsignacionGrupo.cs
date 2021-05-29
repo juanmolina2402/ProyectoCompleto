@@ -54,23 +54,16 @@ namespace ADSProject.Services
 
         //Método para insertar una AsignacionGrupo
         public int Insertar(AsignacionGrupo model)
-        {
-            try
+        {           
+            using (var context = new MyDbContext())
             {
-                // Se inicializa el contexto que nos permitirá conectarnos con la BD
-                using (MyDbContext context = new MyDbContext())
+                using (var dbContextTransaction = context.Database.BeginTransaction())
                 {
-                    //Se crea la instancia del DAL
-                    //Y se le pasa el contexto de la BD
                     AsignacionGrupoDAL dal = new AsignacionGrupoDAL(context);
-                    //Se llama el método para insertar la AsignacionGrupo
+                    dbContextTransaction.Commit();
                     return dal.Insertar(model);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            }          
         }
 
         //Método para insertar una AsignacionGrupo
